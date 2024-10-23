@@ -5,7 +5,7 @@ void debug_nible(uint8_t nible) {
 }
 
 void debug_octet(uint8_t octet) {
-	printf("\n Nible : [%02X]\n", octet);
+	printf("\n Octet : [%02X]\n", octet);
 }
 
 //Change pc_ptr to other address
@@ -55,10 +55,21 @@ void load_value_in(uint16_t opcode, t_architecture *architecture) {
 	//printf("\n Value : [%02X]\n", architecture->registre_v[register_target]);
 }
 
+//Load value from register to another register
+//8xy0 x:register to copy y:register to load
+void load_in_to_in(uint16_t opcode, t_architecture *architecture) {
+	uint8_t register_x = (opcode & 0x0F00) >> 8;
+	uint8_t register_y = (opcode & 0x00F0) >> 4;
+	architecture->registre_v[register_y] = architecture->registre_v[register_x];
+}
+
 //Add value to register
 //7xkk -> x:register kk:value to add
 void add_value_in(uint16_t opcode, t_architecture *architecture) {
-
+	uint8_t register_target = (opcode & 0x0F00) >> 8;
+	uint8_t value_to_add = opcode & 0x00FF;
+	architecture->registre_v[register_target] += value_to_add;
+	debug_octet(architecture->registre_v[register_target]);
 }
 
 //cpu_cycle read the opcode at *pc_ptr and execute the command
@@ -99,7 +110,10 @@ void cpu_cycle(t_architecture *architecture, int cycle_id) {
 			load_value_in(current_opcode, architecture);
 			break;
 		case (0x7000) :
-			load_value_in(current_opcode, architecture);
+			add_value_in(current_opcode, architecture);
+			break;
+		case (0x8000) :
+			load_in_to_in(current_opcode, architecture);
 			break;
 		default:
 			break;

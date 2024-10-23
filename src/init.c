@@ -27,5 +27,9 @@ void init(t_architecture *architecture, t_game_loaded *game_loaded) {
 			exit(EXIT_FAILURE);
 		}
 	}
+	for (int i = 0; i < 16; i++) {
+		memset(&architecture->registre_v[i], 0, 1);
+	}
+	
 	architecture->game_loaded = *game_loaded;
 }

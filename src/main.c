@@ -9,7 +9,7 @@ void main_loop(t_architecture *architecture) {
 		//Timers
 
 		//Logic
-		cpu_cyle(architecture, cycle_id);
+		cpu_cycle(architecture, cycle_id);
 		cycle_id ++;
 		//Drawing loop
 		BeginDrawing();
@@ -32,7 +32,7 @@ int main (int argc, char **argv) {
 		printf("%02X", architecture.memory[i]);
 	}
 
-	architecture.registre_v[0xF] = (uint8_t)0x12;
+	architecture.registre_v[0xF] = (uint8_t)0x64;
 	architecture.registre_v[0x1] = (uint8_t)0x12;
 
 	//Debug

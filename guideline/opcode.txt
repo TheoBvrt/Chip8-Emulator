@@ -25,7 +25,7 @@ Sauter l'instruction suivante si les registres Vx et Vy sont égaux (SE Vx, Vy).
 6xkk /
 Charger kk dans le registre Vx (LD Vx, byte).
 
-7xkk
+7xkk /
 Ajouter kk au registre Vx (ADD Vx, byte).
 
 8xy0
