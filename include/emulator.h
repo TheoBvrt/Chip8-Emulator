@@ -31,9 +31,10 @@ typedef struct architecture {
 
 void draw_grid(t_architecture *architecture);
 void init(t_architecture *architecture, t_game_loaded *game_loaded);
-void cpu_cyle(t_architecture *architecture);
+void cpu_cyle(t_architecture *architecture, int cycle_id);
 
 //CPU Command
 void clear_screen(t_architecture *architecture);
+void skip_if_equal(uint16_t opcode, t_architecture *architecture);
 
 #endif

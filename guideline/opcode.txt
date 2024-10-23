@@ -16,10 +16,10 @@ Appel d'une sous-routine à l'adresse nnn (CALL addr).
 3xkk /
 Sauter l'instruction suivante si le registre Vx est égal à kk (SE Vx, byte).
 
-4xkk
+4xkk /
 Sauter l'instruction suivante si le registre Vx n'est pas égal à kk (SNE Vx, byte).
 
-5xy0
+5xy0 //
 Sauter l'instruction suivante si les registres Vx et Vy sont égaux (SE Vx, Vy).
 
 6xkk

@@ -1,13 +1,16 @@
 #include "../include/emulator.h"
 
 void main_loop(t_architecture *architecture) {
+	int cycle_id = 0;
+
 	InitWindow(DISPLAY_WIDTH * SCALE, DISPLAY_HEIGHT * SCALE, "Chip 8 Emulator");
 	SetTargetFPS(5);
 	while (!WindowShouldClose()) {
 		//Timers
 
 		//Logic
-		cpu_cyle(architecture);
+		cpu_cyle(architecture, cycle_id);
+		cycle_id ++;
 		//Drawing loop
 		BeginDrawing();
 		draw_grid(architecture);
@@ -28,9 +31,21 @@ int main (int argc, char **argv) {
 		}
 		printf("%02X", architecture.memory[i]);
 	}
-	architecture.registre_v[0xF] = (uint8_t)12;
-	cpu_cyle(&architecture);
-	cpu_cyle(&architecture);
+
+	architecture.registre_v[0xF] = (uint8_t)0x12;
+	architecture.registre_v[0x1] = (uint8_t)0x12;
+
+	//Debug
+	int nb_of_cycle = 50;
+	printf("\n\n=============================================\n\n");
+	for (int cycle_id = 0; cycle_id < nb_of_cycle; cycle_id++) {
+		cpu_cyle(&architecture, cycle_id);
+		if (cycle_id < nb_of_cycle - 1)
+			printf(" -> ");
+		if (cycle_id > 0 && (cycle_id + 1) % 5 == 0)
+			printf("\n");
+	}
+	printf("\n\n=============================================\n\n");
 	//main_loop(&architecture);
 	return (EXIT_SUCCESS);
 }
