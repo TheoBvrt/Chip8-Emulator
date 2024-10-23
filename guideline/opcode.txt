@@ -34,7 +34,7 @@ Charger la valeur de Vy dans Vx (LD Vx, Vy).
 8xy1 /
 Effectuer un OU bit à bit entre Vx et Vy, et stocker le résultat dans Vx (OR Vx, Vy).
 
-8xy2
+8xy2 /
 Effectuer un ET bit à bit entre Vx et Vy, et stocker le résultat dans Vx (AND Vx, Vy).
 
 8xy3

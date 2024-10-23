@@ -32,8 +32,8 @@ int main (int argc, char **argv) {
 		printf("%02X", architecture.memory[i]);
 	}
 
-	architecture.registre_v[0x1] = (uint8_t)0x7;
-	architecture.registre_v[0xF] = (uint8_t)0xA;
+	architecture.registre_v[0x1] = (uint8_t)0xF;
+	architecture.registre_v[0xF] = (uint8_t)0x9;
 
 	//Debug
 	int nb_of_cycle = 1;

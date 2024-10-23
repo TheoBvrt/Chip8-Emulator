@@ -87,6 +87,14 @@ void register_and(uint16_t opcode, t_architecture *architecture) {
 	//debug_octet(architecture->registre_v[register_x]);
 }
 
+void register_xor(uint16_t opcode, t_architecture *architecture) {
+	uint8_t register_x = (opcode & 0x0F00) >> 8;
+	uint8_t register_y = (opcode & 0x00F0) >> 4;
+	architecture->registre_v[register_x] = architecture->registre_v[register_x] ^
+		architecture->registre_v[register_y];
+	//debug_octet(architecture->registre_v[register_x]);
+}
+
 //cpu_cycle read the opcode at *pc_ptr and execute the command
 void cpu_cycle(t_architecture *architecture, int cycle_id) {
 	uint8_t octet1 = *architecture->pc_ptr++;
@@ -140,6 +148,10 @@ void cpu_cycle(t_architecture *architecture, int cycle_id) {
 				case (0x0002):
 					register_and(current_opcode, architecture);
 					//debug_nible(architecture->registre_v[0x1]);
+					break;
+				case (0x0003):
+					register_xor(current_opcode, architecture);
+					debug_nible(architecture->registre_v[0x1]);
 					break;
 				break;
 			
