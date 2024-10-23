@@ -32,18 +32,15 @@ int main (int argc, char **argv) {
 		printf("%02X", architecture.memory[i]);
 	}
 
-	architecture.registre_v[0xF] = (uint8_t)0x64;
-	architecture.registre_v[0x1] = (uint8_t)0x12;
+	architecture.registre_v[0x1] = (uint8_t)0x7;
+	architecture.registre_v[0xF] = (uint8_t)0xA;
 
 	//Debug
 	int nb_of_cycle = 1;
 	printf("\n\n=============================================\n\n");
 	for (int cycle_id = 0; cycle_id < nb_of_cycle; cycle_id++) {
 		cpu_cycle(&architecture, cycle_id);
-		if (cycle_id < nb_of_cycle - 1)
-			printf(" -> ");
-		if (cycle_id > 0 && (cycle_id + 1) % 5 == 0)
-			printf("\n");
+		printf("\n");
 	}
 	printf("\n\n=============================================\n\n");
 	//main_loop(&architecture);

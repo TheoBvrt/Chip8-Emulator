@@ -28,10 +28,10 @@ Charger kk dans le registre Vx (LD Vx, byte).
 7xkk /
 Ajouter kk au registre Vx (ADD Vx, byte).
 
-8xy0
+8xy0 /
 Charger la valeur de Vy dans Vx (LD Vx, Vy).
 
-8xy1
+8xy1 /
 Effectuer un OU bit à bit entre Vx et Vy, et stocker le résultat dans Vx (OR Vx, Vy).
 
 8xy2

@@ -1,20 +1,19 @@
 #include "../include/emulator.h"
 
 void debug_nible(uint8_t nible) {
-	printf("\n Nible : [%01X]\n", nible);
+	printf("Nible : [%01X]\n", nible);
 }
 
 void debug_octet(uint8_t octet) {
 	printf("\n Octet : [%02X]\n", octet);
 }
 
-//Change pc_ptr to other address
+//Change pc_ptr to other address 1200 > 1 | 200 /> 0x200
 //1nnn -> nnn:
 void go_to(uint16_t opcode, t_architecture *architecture) {
 	uint16_t address = opcode & 0x0FFF;
 	architecture->pc_ptr = architecture->memory + address;
 }
-
 
 //Skip is value of register is equal of value
 //3xkk -> x:register kk:value to check
@@ -72,6 +71,22 @@ void add_value_in(uint16_t opcode, t_architecture *architecture) {
 	debug_octet(architecture->registre_v[register_target]);
 }
 
+void register_or(uint16_t opcode, t_architecture *architecture) {
+	uint8_t register_x = (opcode & 0x0F00) >> 8;
+	uint8_t register_y = (opcode & 0x00F0) >> 4;
+	architecture->registre_v[register_x] = architecture->registre_v[register_x] |
+		architecture->registre_v[register_y];
+	//debug_octet(architecture->registre_v[register_x]);
+}
+
+void register_and(uint16_t opcode, t_architecture *architecture) {
+	uint8_t register_x = (opcode & 0x0F00) >> 8;
+	uint8_t register_y = (opcode & 0x00F0) >> 4;
+	architecture->registre_v[register_x] = architecture->registre_v[register_x] &
+		architecture->registre_v[register_y];
+	//debug_octet(architecture->registre_v[register_x]);
+}
+
 //cpu_cycle read the opcode at *pc_ptr and execute the command
 void cpu_cycle(t_architecture *architecture, int cycle_id) {
 	uint8_t octet1 = *architecture->pc_ptr++;
@@ -113,7 +128,24 @@ void cpu_cycle(t_architecture *architecture, int cycle_id) {
 			add_value_in(current_opcode, architecture);
 			break;
 		case (0x8000) :
-			load_in_to_in(current_opcode, architecture);
+			switch (current_opcode & 0x000F) {
+				case (0x0000):
+					load_in_to_in(current_opcode, architecture);
+					//debug_nible(architecture->registre_v[0x1]);
+					break;
+				case (0x0001):
+					register_or(current_opcode, architecture);
+					//debug_nible(architecture->registre_v[0x1]);
+					break;
+				case (0x0002):
+					register_and(current_opcode, architecture);
+					//debug_nible(architecture->registre_v[0x1]);
+					break;
+				break;
+			
+			default:
+				break;
+			}
 			break;
 		default:
 			break;
