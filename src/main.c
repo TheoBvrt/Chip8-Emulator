@@ -36,10 +36,10 @@ int main (int argc, char **argv) {
 	architecture.registre_v[0x1] = (uint8_t)0x12;
 
 	//Debug
-	int nb_of_cycle = 50;
+	int nb_of_cycle = 1;
 	printf("\n\n=============================================\n\n");
 	for (int cycle_id = 0; cycle_id < nb_of_cycle; cycle_id++) {
-		cpu_cyle(&architecture, cycle_id);
+		cpu_cycle(&architecture, cycle_id);
 		if (cycle_id < nb_of_cycle - 1)
 			printf(" -> ");
 		if (cycle_id > 0 && (cycle_id + 1) % 5 == 0)

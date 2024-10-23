@@ -1,4 +1,4 @@
-0nnn /
+0nnn
 Appel d'une sous-routine à l'adresse nnn (non implémenté dans certains émulateurs, car cela correspond à un ancien comportement).
 
 00E0 /
@@ -19,10 +19,10 @@ Sauter l'instruction suivante si le registre Vx est égal à kk (SE Vx, byte).
 4xkk /
 Sauter l'instruction suivante si le registre Vx n'est pas égal à kk (SNE Vx, byte).
 
-5xy0 //
+5xy0 /
 Sauter l'instruction suivante si les registres Vx et Vy sont égaux (SE Vx, Vy).
 
-6xkk
+6xkk /
 Charger kk dans le registre Vx (LD Vx, byte).
 
 7xkk

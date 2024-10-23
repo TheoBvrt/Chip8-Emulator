@@ -1,5 +1,6 @@
 #include "../include/emulator.h"
 
+//00E0
 void clear_screen(t_architecture *architecture) {
 	for (int index = 0; index < DISPLAY_HEIGHT; index++) {
 		if (!memset(&architecture->display_ptr[index], 0, DISPLAY_WIDTH)) {
