@@ -1,0 +1,104 @@
+0nnn /
+Appel d'une sous-routine à l'adresse nnn (non implémenté dans certains émulateurs, car cela correspond à un ancien comportement).
+
+00E0 /
+Effacer l'écran (CLS).
+
+00EE
+Retourner de la sous-routine (RET).
+
+1nnn /
+Saut à l'adresse nnn (JP addr).
+
+2nnn
+Appel d'une sous-routine à l'adresse nnn (CALL addr).
+
+3xkk /
+Sauter l'instruction suivante si le registre Vx est égal à kk (SE Vx, byte).
+
+4xkk
+Sauter l'instruction suivante si le registre Vx n'est pas égal à kk (SNE Vx, byte).
+
+5xy0
+Sauter l'instruction suivante si les registres Vx et Vy sont égaux (SE Vx, Vy).
+
+6xkk
+Charger kk dans le registre Vx (LD Vx, byte).
+
+7xkk
+Ajouter kk au registre Vx (ADD Vx, byte).
+
+8xy0
+Charger la valeur de Vy dans Vx (LD Vx, Vy).
+
+8xy1
+Effectuer un OU bit à bit entre Vx et Vy, et stocker le résultat dans Vx (OR Vx, Vy).
+
+8xy2
+Effectuer un ET bit à bit entre Vx et Vy, et stocker le résultat dans Vx (AND Vx, Vy).
+
+8xy3
+Effectuer un XOR entre Vx et Vy, et stocker le résultat dans Vx (XOR Vx, Vy).
+
+8xy4
+Ajouter Vy à Vx. Le registre VF est mis à 1 en cas de dépassement (overflow), sinon à 0 (ADD Vx, Vy).
+
+8xy5
+Soustraire Vy de Vx. Le registre VF est mis à 0 si Vy est plus grand que Vx, sinon à 1 (SUB Vx, Vy).
+
+8xy6
+Décaler Vx vers la droite de 1 bit. Le bit le plus à droite est stocké dans VF (SHR Vx).
+
+8xy7
+Définir Vx à Vy - Vx. Le registre VF est mis à 0 si Vx est plus grand que Vy, sinon à 1 (SUBN Vx, Vy).
+
+8xyE
+Décaler Vx vers la gauche de 1 bit. Le bit le plus à gauche est stocké dans VF (SHL Vx).
+
+9xy0
+Sauter l'instruction suivante si Vx et Vy sont différents (SNE Vx, Vy).
+
+Annn
+Charger l'adresse nnn dans le registre I (LD I, addr).
+
+Bnnn
+Sauter à l'adresse nnn plus V0 (JP V0, addr).
+
+Cxkk
+Mettre dans Vx un nombre aléatoire ET kk (RND Vx, byte).
+
+Dxyn
+Dessiner un sprite à l'emplacement (Vx, Vy) de n octets de hauteur. Le sprite est situé à l'adresse pointée par I. Le registre VF est mis à 1 si une collision est détectée, sinon à 0 (DRW Vx, Vy, nibble).
+
+Ex9E
+Sauter l'instruction suivante si la touche stockée dans Vx est enfoncée (SKP Vx).
+
+ExA1
+Sauter l'instruction suivante si la touche stockée dans Vx n'est pas enfoncée (SKNP Vx).
+
+Fx07
+Charger la valeur du timer de délai dans Vx (LD Vx, DT).
+
+Fx0A
+Attendre que l'utilisateur appuie sur une touche, puis stocker la valeur de la touche dans Vx (LD Vx, K).
+
+Fx15
+Définir le timer de délai à la valeur de Vx (LD DT, Vx).
+
+Fx18
+Définir le timer sonore à la valeur de Vx (LD ST, Vx).
+
+Fx1E
+Ajouter Vx à I (ADD I, Vx).
+
+Fx29
+Définir I à l'emplacement du sprite hexadécimal correspondant à la valeur de Vx (LD F, Vx).
+
+Fx33
+Stocker la représentation BCD (Binary Coded Decimal) de Vx en mémoire à l'adresse pointée par I, I+1, et I+2 (LD B, Vx).
+
+Fx55
+Stocker les valeurs des registres V0 à Vx en mémoire à partir de l'adresse I (LD [I], Vx).
+
+Fx65
+Lire les valeurs des registres V0 à Vx à partir de la mémoire à l'adresse I (LD Vx, [I]).

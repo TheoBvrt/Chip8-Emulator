@@ -1,0 +1,60 @@
+Créer un émulateur CHIP-8 se fait généralement en plusieurs étapes. 
+Voici les grandes étapes à suivre pour le développement de cet émulateur, sans code, pour mieux comprendre les différents 
+composants à implémenter :
+
+1. Initialisation du système
+	Mémoire : Le CHIP-8 dispose de 4 Ko de mémoire (4096 octets). Tu dois créer une structure pour simuler cette mémoire.
+	Registres : Il y a 16 registres (V0 à VF) pour stocker des valeurs temporaires.
+	Pointeur d’adresses (I) : Un registre spécial pour pointer vers une adresse mémoire 
+		utilisée lors de certaines opérations comme le dessin de sprites.
+	Compteur de programme (PC) : Commence généralement à l'adresse 0x200 où les programmes sont chargés.
+	Piles et pointeur de pile : Utilisé pour gérer les appels de sous-routines.
+	Timers : Initialiser deux timers, un pour le son et un pour le délai, qui se décrémentent à une fréquence de 60 Hz.
+
+2. Charger un programme
+	Charger le fichier binaire du programme CHIP-8 (un jeu par exemple) dans la mémoire à partir de l'adresse 0x200.
+	Le fichier doit être lu dans un tableau de la mémoire à partir de cette adresse.
+
+3. Boucle principale d'émulation
+	L'émulateur CHIP-8 fonctionne dans une boucle infinie qui va :
+	Lire l’instruction (opcode) à l'adresse pointée par le compteur de programme (PC).
+	Décoder l’instruction pour déterminer l'action à effectuer.
+	Exécuter l'instruction correspondante.
+	Mettre à jour le compteur de programme et les timers à chaque cycle.
+	Le décompte des timers doit être synchronisé à 60 Hz.
+
+4. Décoder et exécuter les opcodes
+	Le cœur de l'émulateur repose sur le décodage des opcodes (instructions) qui sont 
+	des commandes de 2 octets. Voici quelques exemples d'opcodes à implémenter :
+
+	0x00E0 : Effacer l’écran.
+	0x00EE : Retourner d'une sous-routine.
+	0x1NNN : Sauter à l'adresse NNN.
+	0x6XNN : Charger la valeur NN dans le registre VX.
+	0xFX15 : Définir le timer de délai avec la valeur dans VX.
+	Chaque instruction doit être lue, puis une série d'instructions 
+		conditionnelles (ou un switch) doit être mise en place pour exécuter l'action appropriée.
+
+5. Gérer les graphiques
+	Le CHIP-8 dispose d'un écran de 64x32 pixels en monochrome. Tu dois simuler cet écran et pouvoir mettre à jour les pixels.
+	L'instruction Dxyn est utilisée pour dessiner des sprites à l'écran.
+		Tu vas devoir manipuler les pixels (bits) et gérer les collisions (le registre VF est défini en cas de collision).
+
+6. Gérer les entrées clavier
+	Le clavier CHIP-8 a 16 touches (0-F), correspondant à un pavé hexadécimal.
+	Implémente une méthode pour vérifier l'état des touches et réagir à celles-ci en fonction des opcodes Ex9E 
+		(sauter si la touche VX est pressée) et ExA1 (sauter si la touche VX n’est pas pressée).
+
+7. Gérer les timers
+	Deux timers fonctionnent à une cadence de 60 Hz. Le timer de délai et le timer sonore se décrémentent 
+		automatiquement jusqu’à 0. Lorsque le timer sonore est supérieur à 0, un bip sonore doit être émis.
+
+8. Synchronisation et gestion du temps
+	Le CHIP-8 original fonctionne avec un cycle assez lent, donc tu dois utiliser une technique de synchronisation (comme une
+		boucle de délai) pour limiter la vitesse à une fréquence raisonnable (généralement 500 Hz pour 
+		les cycles d'instruction et 60 Hz pour les timers).
+
+9. Tester avec des jeux CHIP-8
+	Une fois que les fonctionnalités de base sont en place, tu peux tester ton émulateur avec des programmes 
+	et jeux CHIP-8 comme Pong, Tetris, ou Space Invaders.
+	Ces jeux doivent fonctionner correctement si toutes les étapes sont bien implémentées.
