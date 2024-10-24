@@ -46,7 +46,7 @@ Ajouter Vy à Vx. Le registre VF est mis à 1 en cas de dépassement (overflow),
 8xy5 /
 Soustraire Vy de Vx. Le registre VF est mis à 0 si Vy est plus grand que Vx, sinon à 1 (SUB Vx, Vy).
 
-8xy6
+8xy6 /
 Décaler Vx vers la droite de 1 bit. Le bit le plus à droite est stocké dans VF (SHR Vx).
 
 8xy7

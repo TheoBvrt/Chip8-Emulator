@@ -96,7 +96,7 @@ void register_xor(uint16_t opcode, t_architecture *architecture) {
 	//debug_octet(architecture->registre_v[register_x]);
 }
 
-//8xy4
+//8xy4 -> bug ?
 void safe_add(uint16_t opcode, t_architecture *architecture) {
 	uint8_t register_x = (opcode & 0x0F00) >> 8;
 	uint8_t register_y = (opcode & 0x00F0) >> 4;
@@ -111,7 +111,7 @@ void safe_add(uint16_t opcode, t_architecture *architecture) {
 	architecture->registre_v[register_x] = check;
 }
 
-//8xy5
+//8xy5 -> bug ?
 void safe_sub(uint16_t opcode, t_architecture *architecture) {
 	uint8_t register_x = (opcode & 0x0F00) >> 8;
 	uint8_t register_y = (opcode & 0x00F0) >> 4;
@@ -123,7 +123,30 @@ void safe_sub(uint16_t opcode, t_architecture *architecture) {
 	}
 	printf("-> %02X ", check);
 	printf("[Emprunt:%01X]", architecture->registre_v[0xF]);
-	//architecture->registre_v[register_x] = check;
+	architecture->registre_v[register_x] = check;
+}
+
+//8xy6
+void op_8xy6(uint16_t opcode, t_architecture *architecture) {
+	uint8_t register_x = (opcode & 0x0F00) >> 8;
+	architecture->registre_v[0xF] = architecture->registre_v[register_x] & 0x1;
+	architecture->registre_v[register_x] >>= 1;
+	printf("[%02X]", architecture->registre_v[register_x]);
+}
+
+//8xy7
+void safe_sub_2(uint16_t opcode, t_architecture *architecture) {
+	uint8_t register_x = (opcode & 0x0F00) >> 8;
+	uint8_t register_y = (opcode & 0x00F0) >> 4;
+	uint8_t check = architecture->registre_v[register_y] - architecture->registre_v[register_x];
+	if (architecture->registre_v[register_x] < architecture->registre_v[register_y]) {
+		architecture->registre_v[0xF] = 1;
+	} else {
+		architecture->registre_v[0xF] = 0;
+	}
+	printf("-> %02X ", check);
+	printf("[Emprunt:%01X]", architecture->registre_v[0xF]);
+	architecture->registre_v[register_x] = check;
 }
 
 //cpu_cycle read the opcode at *pc_ptr and execute the command
@@ -134,7 +157,7 @@ void cpu_cycle(t_architecture *architecture, int cycle_id) {
 	//ptr on next opcode
 
 	current_opcode = (octet1 << 8 | octet2);
-	printf("[c:%d | %04X]", cycle_id, current_opcode);
+	printf("[c:%d | %04X] debug > ", cycle_id, current_opcode);
 	switch (current_opcode & 0xF000) {
 		case (0x0000) :
 			switch (current_opcode & 0x00FF) {
@@ -190,6 +213,14 @@ void cpu_cycle(t_architecture *architecture, int cycle_id) {
 					break;
 				case (0x0005):
 					safe_sub(current_opcode, architecture);
+					//debug_nible(architecture->registre_v[0x1]);
+					break;
+				case (0x0006):
+					op_8xy6(current_opcode, architecture);
+					//debug_nible(architecture->registre_v[0x1]);
+					break;
+				case (0x0007):
+					safe_sub_2(current_opcode, architecture);
 					//debug_nible(architecture->registre_v[0x1]);
 					break;
 				break;
