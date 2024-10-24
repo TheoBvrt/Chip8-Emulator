@@ -36,7 +36,7 @@ int main (int argc, char **argv) {
 	architecture.registre_v[0xA] = (uint8_t)0x00;
 
 	//Debug
-	int nb_of_cycle = 1;
+	int nb_of_cycle = 2;
 	printf("\n\n=============================================\n\n");
 	for (int cycle_id = 0; cycle_id < nb_of_cycle; cycle_id++) {
 		cpu_cycle(&architecture, cycle_id);

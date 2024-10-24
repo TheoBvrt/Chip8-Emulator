@@ -49,13 +49,13 @@ Soustraire Vy de Vx. Le registre VF est mis à 0 si Vy est plus grand que Vx, si
 8xy6 /
 Décaler Vx vers la droite de 1 bit. Le bit le plus à droite est stocké dans VF (SHR Vx).
 
-8xy7
+8xy7 /
 Définir Vx à Vy - Vx. Le registre VF est mis à 0 si Vx est plus grand que Vy, sinon à 1 (SUBN Vx, Vy).
 
-8xyE
+8xyE /
 Décaler Vx vers la gauche de 1 bit. Le bit le plus à gauche est stocké dans VF (SHL Vx).
 
-9xy0
+9xy0 /
 Sauter l'instruction suivante si Vx et Vy sont différents (SNE Vx, Vy).
 
 Annn

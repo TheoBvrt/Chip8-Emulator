@@ -44,6 +44,15 @@ void skip_if_registre_equal(uint16_t opcode, t_architecture *architecture) {
 		architecture->pc_ptr += 2;
 }
 
+//9xy0
+void skip_if_register_not_equal(uint16_t opcode, t_architecture *architecture) {
+	uint8_t register_1 = (opcode & 0x0F00) >> 8;
+	uint8_t register_2 = (opcode & 0x00F0) >> 4;
+	printf("test");
+	if (architecture->registre_v[register_1] != architecture->registre_v[register_2])
+		architecture->pc_ptr += 2;
+}
+
 //Load value into register
 //6xkk -> x:register kk:value to load
 void load_value_in(uint16_t opcode, t_architecture *architecture) {
@@ -127,7 +136,7 @@ void safe_sub(uint16_t opcode, t_architecture *architecture) {
 }
 
 //8xy6
-void op_8xy6(uint16_t opcode, t_architecture *architecture) {
+void shift_to_right(uint16_t opcode, t_architecture *architecture) {
 	uint8_t register_x = (opcode & 0x0F00) >> 8;
 	architecture->registre_v[0xF] = architecture->registre_v[register_x] & 0x1;
 	architecture->registre_v[register_x] >>= 1;
@@ -147,6 +156,15 @@ void safe_sub_2(uint16_t opcode, t_architecture *architecture) {
 	printf("-> %02X ", check);
 	printf("[Emprunt:%01X]", architecture->registre_v[0xF]);
 	architecture->registre_v[register_x] = check;
+}
+
+//8xyE
+void shift_to_left(uint16_t opcode, t_architecture *architecture) {
+	uint8_t register_x = (opcode & 0x0F00) >> 8;
+	architecture->registre_v[0xF] = (architecture->registre_v[register_x] & 0x80) >> 7;
+	architecture->registre_v[register_x] <<= 1;
+	printf("[%02X]", architecture->registre_v[register_x]);
+	printf("[%02X]", architecture->registre_v[0xF]); 
 }
 
 //cpu_cycle read the opcode at *pc_ptr and execute the command
@@ -216,18 +234,24 @@ void cpu_cycle(t_architecture *architecture, int cycle_id) {
 					//debug_nible(architecture->registre_v[0x1]);
 					break;
 				case (0x0006):
-					op_8xy6(current_opcode, architecture);
+					shift_to_right(current_opcode, architecture);
 					//debug_nible(architecture->registre_v[0x1]);
 					break;
 				case (0x0007):
 					safe_sub_2(current_opcode, architecture);
 					//debug_nible(architecture->registre_v[0x1]);
 					break;
+				case (0x000E):
+					shift_to_left(current_opcode, architecture);
+					//debug_nible(architecture->registre_v[0x1]);
+					break;
 				break;
-			
 			default:
 				break;
 			}
+			break;
+		case (0x9000) :
+			skip_if_register_not_equal(current_opcode, architecture);
 			break;
 		default:
 			break;
