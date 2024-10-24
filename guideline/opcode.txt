@@ -37,13 +37,13 @@ Effectuer un OU bit à bit entre Vx et Vy, et stocker le résultat dans Vx (OR V
 8xy2 /
 Effectuer un ET bit à bit entre Vx et Vy, et stocker le résultat dans Vx (AND Vx, Vy).
 
-8xy3
+8xy3 /
 Effectuer un XOR entre Vx et Vy, et stocker le résultat dans Vx (XOR Vx, Vy).
 
-8xy4
+8xy4 /
 Ajouter Vy à Vx. Le registre VF est mis à 1 en cas de dépassement (overflow), sinon à 0 (ADD Vx, Vy).
 
-8xy5
+8xy5 /
 Soustraire Vy de Vx. Le registre VF est mis à 0 si Vy est plus grand que Vx, sinon à 1 (SUB Vx, Vy).
 
 8xy6

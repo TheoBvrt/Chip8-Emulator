@@ -87,12 +87,43 @@ void register_and(uint16_t opcode, t_architecture *architecture) {
 	//debug_octet(architecture->registre_v[register_x]);
 }
 
+//8xy3
 void register_xor(uint16_t opcode, t_architecture *architecture) {
 	uint8_t register_x = (opcode & 0x0F00) >> 8;
 	uint8_t register_y = (opcode & 0x00F0) >> 4;
 	architecture->registre_v[register_x] = architecture->registre_v[register_x] ^
 		architecture->registre_v[register_y];
 	//debug_octet(architecture->registre_v[register_x]);
+}
+
+//8xy4
+void safe_add(uint16_t opcode, t_architecture *architecture) {
+	uint8_t register_x = (opcode & 0x0F00) >> 8;
+	uint8_t register_y = (opcode & 0x00F0) >> 4;
+	uint8_t check = architecture->registre_v[register_x] + architecture->registre_v[register_y];
+	if (check < architecture->registre_v[register_x]) {
+		architecture->registre_v[0xF] = 1;
+	} else {
+		architecture->registre_v[0xF] = 0;
+	}
+	printf("-> %02X", check);
+	printf("overflow %01X ", architecture->registre_v[0xF]);
+	architecture->registre_v[register_x] = check;
+}
+
+//8xy5
+void safe_sub(uint16_t opcode, t_architecture *architecture) {
+	uint8_t register_x = (opcode & 0x0F00) >> 8;
+	uint8_t register_y = (opcode & 0x00F0) >> 4;
+	uint8_t check = architecture->registre_v[register_x] - architecture->registre_v[register_y];
+	if (architecture->registre_v[register_x] > architecture->registre_v[register_y]) {
+		architecture->registre_v[0xF] = 1;
+	} else {
+		architecture->registre_v[0xF] = 0;
+	}
+	printf("-> %02X ", check);
+	printf("[Emprunt:%01X]", architecture->registre_v[0xF]);
+	//architecture->registre_v[register_x] = check;
 }
 
 //cpu_cycle read the opcode at *pc_ptr and execute the command
@@ -151,7 +182,15 @@ void cpu_cycle(t_architecture *architecture, int cycle_id) {
 					break;
 				case (0x0003):
 					register_xor(current_opcode, architecture);
-					debug_nible(architecture->registre_v[0x1]);
+					//debug_nible(architecture->registre_v[0x1]);
+					break;
+				case (0x0004):
+					safe_add(current_opcode, architecture);
+					//debug_nible(architecture->registre_v[0x1]);
+					break;
+				case (0x0005):
+					safe_sub(current_opcode, architecture);
+					//debug_nible(architecture->registre_v[0x1]);
 					break;
 				break;
 			
