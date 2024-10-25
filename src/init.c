@@ -20,10 +20,13 @@ void parse_game(t_architecture *architecture, t_game_loaded *game_loaded) {
 
 void init(t_architecture *architecture, t_game_loaded *game_loaded) {
 	architecture->pc_ptr = (architecture->memory + 0x200);
+	architecture->addr_ptr = 0x0;
+	srand(time(NULL));
+
 	parse_game(architecture, game_loaded);
 
 	for (int index = 0; index < DISPLAY_HEIGHT; index++) {
-		if (!memset(&architecture->display_ptr[index], 1, DISPLAY_WIDTH)) {
+		if (!memset(&architecture->display_ptr[index], 0, DISPLAY_WIDTH)) {
 			exit(EXIT_FAILURE);
 		}
 	}

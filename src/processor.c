@@ -167,6 +167,25 @@ void shift_to_left(uint16_t opcode, t_architecture *architecture) {
 	printf("[%02X]", architecture->registre_v[0xF]); 
 }
 
+//Annn -> nnn:
+void load_addr_ptr(uint16_t opcode, t_architecture *architecture) {
+	uint16_t address = opcode & 0x0FFF;
+	architecture->addr_ptr = architecture->memory + address;
+}
+
+void op_bnnn(uint16_t opcode, t_architecture *architecture) {
+	uint16_t address = opcode & 0x0FFF;
+	architecture->pc_ptr = (architecture->memory + address) + architecture->registre_v[0x0];
+}
+
+void op_cxkk(uint16_t opcode, t_architecture *architecture) {
+	uint8_t register_number = (opcode & 0x0F00) >> 8;
+	uint8_t bit_mask = opcode & 0x00FF;
+	architecture->registre_v[register_number] = (uint8_t)(rand() % 256);
+	printf("(%02X)", architecture->registre_v[register_number]);
+}
+
+
 //cpu_cycle read the opcode at *pc_ptr and execute the command
 void cpu_cycle(t_architecture *architecture, int cycle_id) {
 	uint8_t octet1 = *architecture->pc_ptr++;
@@ -252,6 +271,18 @@ void cpu_cycle(t_architecture *architecture, int cycle_id) {
 			break;
 		case (0x9000) :
 			skip_if_register_not_equal(current_opcode, architecture);
+			break;
+		case (0xA000) :
+			load_addr_ptr(current_opcode, architecture);
+			break;
+		case (0xB000) :
+			op_bnnn(current_opcode, architecture);
+			break;
+		case (0xC000) :
+			op_cxkk(current_opcode, architecture);
+			break;
+		case (0xD000) :
+			draw_sprite(current_opcode, architecture);
 			break;
 		default:
 			break;

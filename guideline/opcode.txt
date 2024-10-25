@@ -58,16 +58,16 @@ Décaler Vx vers la gauche de 1 bit. Le bit le plus à gauche est stocké dans V
 9xy0 /
 Sauter l'instruction suivante si Vx et Vy sont différents (SNE Vx, Vy).
 
-Annn
+Annn /
 Charger l'adresse nnn dans le registre I (LD I, addr).
 
-Bnnn
+Bnnn /
 Sauter à l'adresse nnn plus V0 (JP V0, addr).
 
-Cxkk
+Cxkk /
 Mettre dans Vx un nombre aléatoire ET kk (RND Vx, byte).
 
-Dxyn
+
 Dessiner un sprite à l'emplacement (Vx, Vy) de n octets de hauteur. Le sprite est situé à l'adresse pointée par I. Le registre VF est mis à 1 si une collision est détectée, sinon à 0 (DRW Vx, Vy, nibble).
 
 Ex9E
