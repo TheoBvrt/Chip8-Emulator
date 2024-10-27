@@ -174,15 +174,15 @@ void load_addr_ptr(uint16_t opcode, t_architecture *architecture) {
 }
 
 void op_bnnn(uint16_t opcode, t_architecture *architecture) {
-	uint16_t address = opcode & 0x0FFF;
-	architecture->pc_ptr = (architecture->memory + address) + architecture->registre_v[0x0];
+	uint16_t address = opcode & 0x0FFF  + architecture->registre_v[0x0];
+	architecture->pc_ptr = architecture->memory + address;
 }
 
 void op_cxkk(uint16_t opcode, t_architecture *architecture) {
 	uint8_t register_number = (opcode & 0x0F00) >> 8;
 	uint8_t bit_mask = opcode & 0x00FF;
-	architecture->registre_v[register_number] = (uint8_t)(rand() % 256);
-	printf("(%02X)", architecture->registre_v[register_number]);
+	architecture->registre_v[register_number] = (uint8_t)(rand() % 256) & bit_mask;
+	//printf("(%02X)", architecture->registre_v[register_number]);
 }
 
 //register(x) take value from dalay timer;
@@ -203,6 +203,35 @@ void op_fx15(uint16_t opcode, t_architecture *architecture) {
 void op_fx18(uint16_t opcode, t_architecture *architecture) {
 	uint8_t register_number = (opcode & 0x0F00) >> 8;
 	architecture->sound_timer = architecture->registre_v[register_number];
+}
+
+void op_fx33(uint16_t opcode, t_architecture *architecture) {
+	uint8_t register_number = (opcode & 0x0F00) >> 8;
+	uint8_t *copy_ptr = architecture->addr_ptr;
+	int number = (int) architecture->registre_v[register_number];
+	int index = 0;
+	int digit[3];
+
+	if (number < 100)
+		digit[0] = 0;
+	if (number < 10)
+		digit[1] = 0;
+	index = 2;
+	while (number) {
+		digit[index--] = number % 10;
+		number /= 10;
+	}
+	for (size_t i = 0; i < 3; i++) {
+		*copy_ptr++ = digit[i];
+	}
+}
+
+void op_fx55(uint16_t opcode, t_architecture *architecture) {
+	uint8_t register_number = (opcode & 0x0F00) >> 8;
+	uint8_t *copy_ptr = architecture->addr_ptr;
+	for (size_t i = 0; i < register_number; i++) {
+		*copy_ptr++ = architecture->registre_v[i];
+	}
 }
 
 //cpu_cycle read the opcode at *pc_ptr and execute the command
@@ -315,6 +344,12 @@ void cpu_cycle(t_architecture *architecture, int cycle_id) {
 					break;
 				case (0x0018):
 					op_fx18(current_opcode, architecture);
+					break;				
+				case (0x0033):
+					op_fx33(current_opcode, architecture);
+					break;
+				case (0x0055):
+					op_fx55(current_opcode, architecture);
 					break;
 				default:
 					break;

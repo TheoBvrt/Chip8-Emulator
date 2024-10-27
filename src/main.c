@@ -15,6 +15,10 @@ void main_loop(t_architecture *architecture) {
 		BeginDrawing();
 		draw_grid(architecture);
 		EndDrawing();
+		if (architecture->delay_timer > 0)
+			architecture->delay_timer --;
+		if (architecture->sound_timer > 0)
+			architecture->sound_timer --;
 	}
 	CloseWindow();
 }
@@ -32,15 +36,15 @@ int main (int argc, char **argv) {
 		printf("%02X", architecture.memory[i]);
 	}
 
-	architecture.memory[0x321] = 0xFF;
-	architecture.memory[0x322] = 0x81;
-	architecture.memory[0x323] = 0xFF;
-	architecture.addr_ptr = architecture.memory + 0x321;
-	architecture.delay_timer = 0x14;
-	architecture.registre_v[0] = 0x14;
+	// architecture.memory[0x321] = 0xFF;
+	// architecture.memory[0x322] = 0x81;
+	// architecture.memory[0x323] = 0xFF;
+	// architecture.addr_ptr = architecture.memory + 0x202;
+	// architecture.delay_timer = 0x14;
+	// architecture.registre_v[0] = 0xFF;
 
 	//Debug
-	int nb_of_cycle = 1;
+	int nb_of_cycle = 5;
 	// printf("\n\n=============================================\n\n");
 	// for (int cycle_id = 0; cycle_id < nb_of_cycle; cycle_id++) {
 	// 	cpu_cycle(&architecture, cycle_id);

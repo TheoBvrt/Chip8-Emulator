@@ -94,10 +94,10 @@ Ajouter Vx à I (ADD I, Vx).
 Fx29
 Définir I à l'emplacement du sprite hexadécimal correspondant à la valeur de Vx (LD F, Vx).
 
-Fx33
+Fx33 //
 Stocker la représentation BCD (Binary Coded Decimal) de Vx en mémoire à l'adresse pointée par I, I+1, et I+2 (LD B, Vx).
 
-Fx55
+Fx55 //
 Stocker les valeurs des registres V0 à Vx en mémoire à partir de l'adresse I (LD [I], Vx).
 
 Fx65
