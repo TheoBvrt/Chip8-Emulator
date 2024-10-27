@@ -32,17 +32,15 @@ int main (int argc, char **argv) {
 		printf("%02X", architecture.memory[i]);
 	}
 
-	architecture.memory[0x321] = 0x3C;
-	architecture.memory[0x322] = 0x24;
-	architecture.memory[0x323] = 0x3C;
+	architecture.memory[0x321] = 0xFF;
+	architecture.memory[0x322] = 0x81;
+	architecture.memory[0x323] = 0xFF;
 	architecture.addr_ptr = architecture.memory + 0x321;
-
-	architecture.registre_v[0x1] = (uint8_t)0;
-	architecture.registre_v[0xA] = (uint8_t)0;
-	architecture.registre_v[0x0] = (uint8_t)0x04;
+	architecture.delay_timer = 0x14;
+	architecture.registre_v[0] = 0x14;
 
 	//Debug
-	// int nb_of_cycle = 1;
+	int nb_of_cycle = 1;
 	// printf("\n\n=============================================\n\n");
 	// for (int cycle_id = 0; cycle_id < nb_of_cycle; cycle_id++) {
 	// 	cpu_cycle(&architecture, cycle_id);

@@ -4,7 +4,7 @@ void parse_game(t_architecture *architecture, t_game_loaded *game_loaded) {
 	if (!memset(architecture->memory, 0, MEMORY_SIZE)) 
 		exit(EXIT_FAILURE);
 
-	game_loaded->game_file = fopen("/Users/theo/Documents/Perso/C/Chip8/Pong.ch8", "rb");
+	game_loaded->game_file = fopen("/Users/theo/Documents/Perso/C/Chip8/test_opcode.ch8", "rb");
 	if (!game_loaded->game_file) {
 		printf("Error opening file");
 		exit(EXIT_FAILURE);

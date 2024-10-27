@@ -31,7 +31,7 @@ void draw_sprite(uint16_t opcode, t_architecture *architecture) {
 		}
 		sprite_ptr++;
 		y ++;
-	}
+	}	
 }
 
 //00E0

@@ -25,6 +25,8 @@ typedef struct architecture {
 	uint8_t registre_v[16];
 	uint8_t *pc_ptr;
 	uint8_t *addr_ptr;
+	uint8_t delay_timer;
+	uint8_t sound_timer;
 
 	t_game_loaded game_loaded;
 } t_architecture;

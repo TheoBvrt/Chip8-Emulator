@@ -1,4 +1,4 @@
-0nnn
+∏0nnn
 Appel d'une sous-routine à l'adresse nnn (non implémenté dans certains émulateurs, car cela correspond à un ancien comportement).
 
 00E0 /
@@ -67,7 +67,7 @@ Sauter à l'adresse nnn plus V0 (JP V0, addr).
 Cxkk /
 Mettre dans Vx un nombre aléatoire ET kk (RND Vx, byte).
 
-
+/
 Dessiner un sprite à l'emplacement (Vx, Vy) de n octets de hauteur. Le sprite est situé à l'adresse pointée par I. Le registre VF est mis à 1 si une collision est détectée, sinon à 0 (DRW Vx, Vy, nibble).
 
 Ex9E
@@ -76,16 +76,16 @@ Sauter l'instruction suivante si la touche stockée dans Vx est enfoncée (SKP V
 ExA1
 Sauter l'instruction suivante si la touche stockée dans Vx n'est pas enfoncée (SKNP Vx).
 
-Fx07
+Fx07 /
 Charger la valeur du timer de délai dans Vx (LD Vx, DT).
 
 Fx0A
 Attendre que l'utilisateur appuie sur une touche, puis stocker la valeur de la touche dans Vx (LD Vx, K).
 
-Fx15
+Fx15 /
 Définir le timer de délai à la valeur de Vx (LD DT, Vx).
 
-Fx18
+Fx18 /
 Définir le timer sonore à la valeur de Vx (LD ST, Vx).
 
 Fx1E

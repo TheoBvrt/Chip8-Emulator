@@ -68,7 +68,7 @@ void load_value_in(uint16_t opcode, t_architecture *architecture) {
 void load_in_to_in(uint16_t opcode, t_architecture *architecture) {
 	uint8_t register_x = (opcode & 0x0F00) >> 8;
 	uint8_t register_y = (opcode & 0x00F0) >> 4;
-	architecture->registre_v[register_y] = architecture->registre_v[register_x];
+	architecture->registre_v[register_x] = architecture->registre_v[register_y];
 }
 
 //Add value to register
@@ -77,7 +77,7 @@ void add_value_in(uint16_t opcode, t_architecture *architecture) {
 	uint8_t register_target = (opcode & 0x0F00) >> 8;
 	uint8_t value_to_add = opcode & 0x00FF;
 	architecture->registre_v[register_target] += value_to_add;
-	debug_octet(architecture->registre_v[register_target]);
+	//printf("%02X", architecture->registre_v[register_target]);
 }
 
 void register_or(uint16_t opcode, t_architecture *architecture) {
@@ -170,7 +170,7 @@ void shift_to_left(uint16_t opcode, t_architecture *architecture) {
 //Annn -> nnn:
 void load_addr_ptr(uint16_t opcode, t_architecture *architecture) {
 	uint16_t address = opcode & 0x0FFF;
-	architecture->addr_ptr = architecture->memory + address;
+	architecture->addr_ptr = &architecture->memory[address];
 }
 
 void op_bnnn(uint16_t opcode, t_architecture *architecture) {
@@ -185,6 +185,25 @@ void op_cxkk(uint16_t opcode, t_architecture *architecture) {
 	printf("(%02X)", architecture->registre_v[register_number]);
 }
 
+//register(x) take value from dalay timer;
+void op_fx07(uint16_t opcode, t_architecture *architecture) {
+	uint8_t register_number = (opcode & 0x0F00) >> 8;
+	architecture->registre_v[register_number] = architecture->delay_timer;
+}
+
+//delay timer take value from register(x)
+void op_fx15(uint16_t opcode, t_architecture *architecture) {
+	uint8_t register_number = (opcode & 0x0F00) >> 8;
+	architecture->delay_timer = architecture->registre_v[register_number];
+
+	printf("[%02X]", architecture->delay_timer);
+}
+
+//sound timer take value from register(x)
+void op_fx18(uint16_t opcode, t_architecture *architecture) {
+	uint8_t register_number = (opcode & 0x0F00) >> 8;
+	architecture->sound_timer = architecture->registre_v[register_number];
+}
 
 //cpu_cycle read the opcode at *pc_ptr and execute the command
 void cpu_cycle(t_architecture *architecture, int cycle_id) {
@@ -286,6 +305,23 @@ void cpu_cycle(t_architecture *architecture, int cycle_id) {
 			break;
 		default:
 			break;
+		case (0xF000) :
+			switch (current_opcode & 0x00FF) {
+				case (0x0007):
+					op_fx07(current_opcode, architecture);
+					break;
+				case (0x0015):
+					op_fx15(current_opcode, architecture);
+					break;
+				case (0x0018):
+					op_fx18(current_opcode, architecture);
+					break;
+				default:
+					break;
+				}
+				break;
+			break;
 	}
+	printf("\n");
 	//printf("\n[%02X]\n", current_opcode);*/
 }
