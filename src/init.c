@@ -4,7 +4,7 @@ void parse_game(t_architecture *architecture, t_game_loaded *game_loaded) {
 	if (!memset(architecture->memory, 0, MEMORY_SIZE)) 
 		exit(EXIT_FAILURE);
 
-	game_loaded->game_file = fopen("/Users/theo/Documents/Perso/C/Chip8/TicTac.ch8", "rb");
+	game_loaded->game_file = fopen("/Users/theo/Documents/Perso/C/Chip8/Tetris.ch8", "rb");
 	if (!game_loaded->game_file) {
 		printf("Error opening file");
 		exit(EXIT_FAILURE);
@@ -24,7 +24,10 @@ void init(t_architecture *architecture, t_game_loaded *game_loaded) {
 	srand(time(NULL));
 
 	parse_game(architecture, game_loaded);
-
+	for (size_t i = 0; i < 16; i++) {
+		architecture->stack[i] = 0;
+	}
+	
 	for (int index = 0; index < DISPLAY_HEIGHT; index++) {
 		if (!memset(&architecture->display_ptr[index], 0, DISPLAY_WIDTH)) {
 			exit(EXIT_FAILURE);

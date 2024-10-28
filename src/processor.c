@@ -8,6 +8,34 @@ void debug_octet(uint8_t octet) {
 	printf("\n Octet : [%02X]\n", octet);
 }
 
+void add_addr_on_stack(uint16_t addr, t_architecture *architecture) {
+	for (size_t i = 0; i < 16; i++) {
+		if (architecture->stack[i] == 0) {
+			architecture->stack[i] = addr;
+			return ;
+		}
+	}
+}
+
+void op_0x0nnn(uint16_t opcode, t_architecture *architecture) {
+	uint16_t address = opcode & 0x0FFF;
+	uint16_t next_addr = (architecture->pc_ptr - architecture->memory);
+	//printf("[%02X]", architecture->memory[next_addr]);
+	add_addr_on_stack(next_addr, architecture);
+	architecture->pc_ptr = architecture->memory + address;
+}
+
+void op_0x00ee(uint16_t opcode, t_architecture *architecture) {
+	printf("next_addr : 0x%04X\n", architecture->stack[0]);
+	for (size_t i = 0; i < 16; i++) {
+		if (architecture->stack[i] != 0) {
+			architecture->pc_ptr = &architecture->memory[architecture->stack[i]];
+			architecture->stack[i] = 0;
+			return ;
+		}
+	}
+}
+
 //Change pc_ptr to other address 1200 > 1 | 200 /> 0x200
 //1nnn -> nnn:
 void go_to(uint16_t opcode, t_architecture *architecture) {
@@ -250,9 +278,10 @@ void cpu_cycle(t_architecture *architecture, int cycle_id) {
 					clear_screen(architecture);
 					break;
 				case (0x00EE):
-					printf("Return to sub program");
+					op_0x00ee(current_opcode, architecture);
 					break;
 				default:
+					op_0x0nnn(current_opcode, architecture);
 					break;
 			}
 			break;

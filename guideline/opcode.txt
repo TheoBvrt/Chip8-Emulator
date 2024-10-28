@@ -1,10 +1,10 @@
-∏0nnn
+0nnn /
 Appel d'une sous-routine à l'adresse nnn (non implémenté dans certains émulateurs, car cela correspond à un ancien comportement).
 
 00E0 /
 Effacer l'écran (CLS).
 
-00EE
+00EE /
 Retourner de la sous-routine (RET).
 
 1nnn /
@@ -97,7 +97,7 @@ Définir I à l'emplacement du sprite hexadécimal correspondant à la valeur de
 Fx33 //
 Stocker la représentation BCD (Binary Coded Decimal) de Vx en mémoire à l'adresse pointée par I, I+1, et I+2 (LD B, Vx).
 
-Fx55 //
+Fx55 
 Stocker les valeurs des registres V0 à Vx en mémoire à partir de l'adresse I (LD [I], Vx).
 
 Fx65
