@@ -87,8 +87,7 @@ void load_value_in(uint16_t opcode, t_architecture *architecture) {
 	uint8_t register_target = (opcode & 0x0F00) >> 8;
 	uint8_t value_to_load = opcode & 0x00FF;
 	architecture->registre_v[register_target] = value_to_load;
-	debug_nible(register_target);
-	//printf("\n Value : [%02X]\n", architecture->registre_v[register_target]);
+	printf("value : %01X : [%02X]", register_target, architecture->registre_v[register_target]);
 }
 
 //Load value from register to another register
@@ -199,6 +198,9 @@ void shift_to_left(uint16_t opcode, t_architecture *architecture) {
 void load_addr_ptr(uint16_t opcode, t_architecture *architecture) {
 	uint16_t address = opcode & 0x0FFF;
 	architecture->addr_ptr = &architecture->memory[address];
+
+	printf("%02X", *architecture->addr_ptr);
+	printf("%02X", *(architecture->addr_ptr + 1));
 }
 
 void op_bnnn(uint16_t opcode, t_architecture *architecture) {

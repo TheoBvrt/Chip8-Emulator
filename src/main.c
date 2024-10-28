@@ -4,21 +4,35 @@ void main_loop(t_architecture *architecture) {
 	int cycle_id = 0;
 
 	InitWindow(DISPLAY_WIDTH * SCALE, DISPLAY_HEIGHT * SCALE, "Chip 8 Emulator");
-	SetTargetFPS(60);
+	SetTargetFPS(120);
+	int i = 0;
 	while (!WindowShouldClose()) {
-		//Timers
+        // Timers
 
-		//Logic
-		cpu_cycle(architecture, cycle_id);
-		cycle_id ++;
-		//Drawing loop
-		BeginDrawing();
-		draw_grid(architecture);
-		EndDrawing();
-		if (architecture->delay_timer > 0)
-			architecture->delay_timer --;
-		if (architecture->sound_timer > 0)
-			architecture->sound_timer --;
+        // // Logic
+		// if (i == 1)
+		// {
+        // 	cpu_cycle(architecture, cycle_id);
+		//   	cycle_id++;
+		// 	i = 0;
+		// }
+
+		  	cpu_cycle(architecture, cycle_id);
+		  	cycle_id++;
+
+        // Drawing loop
+        BeginDrawing();
+        ClearBackground(RAYWHITE);  // Pour effacer l'arrière-plan à chaque cycle
+        draw_grid(architecture);
+        EndDrawing();
+
+        // Décrément des timers
+        if (architecture->delay_timer > 0)
+            architecture->delay_timer--;
+        if (architecture->sound_timer > 0)
+            architecture->sound_timer--;
+		// if (IsKeyPressed(KEY_SPACE))
+		// 	i = 1;
 	}
 	CloseWindow();
 }
