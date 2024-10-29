@@ -26,17 +26,16 @@ void draw_sprite(uint16_t opcode, t_architecture *architecture) {
 			if (bits[x] == 1) {
 				if (architecture->display_ptr[posY + y - 1][posX + x] == 1) {
 					architecture->registre_v[0xF] = 1;
-					architecture->display_ptr[posY + y - 1][posX + x] = 0;
 				}
-				else {
-					architecture->display_ptr[posY + y - 1][posX + x] = 1;
-				}
+				architecture->display_ptr[posY + y - 1][posX + x] ^= 1;
 			}
 			x ++;
 		}
 		sprite_ptr++;
 		y ++;
-	}	
+	}
+
+	printf("draw sprite");
 }
 
 //00E0

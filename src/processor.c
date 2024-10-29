@@ -17,16 +17,15 @@ void add_addr_on_stack(uint16_t addr, t_architecture *architecture) {
 	}
 }
 
-void op_0x0nnn(uint16_t opcode, t_architecture *architecture) {
+void op_0x2nnn(uint16_t opcode, t_architecture *architecture) {
 	uint16_t address = opcode & 0x0FFF;
 	uint16_t next_addr = (architecture->pc_ptr - architecture->memory);
-	//printf("[%02X]", architecture->memory[next_addr]);
 	add_addr_on_stack(next_addr, architecture);
 	architecture->pc_ptr = architecture->memory + address;
 }
 
 void op_0x00ee(uint16_t opcode, t_architecture *architecture) {
-	printf("next_addr : 0x%04X\n", architecture->stack[0]);
+	printf("next_addr after sub rutine: 0x%04X", architecture->stack[0]);
 	for (size_t i = 0; i < 16; i++) {
 		if (architecture->stack[i] != 0) {
 			architecture->pc_ptr = &architecture->memory[architecture->stack[i]];
@@ -41,6 +40,7 @@ void op_0x00ee(uint16_t opcode, t_architecture *architecture) {
 void go_to(uint16_t opcode, t_architecture *architecture) {
 	uint16_t address = opcode & 0x0FFF;
 	architecture->pc_ptr = architecture->memory + address;
+	printf("go to > [%02X%02X]", *architecture->pc_ptr, *(architecture->pc_ptr + 1));
 }
 
 //Skip is value of register is equal of value
@@ -58,6 +58,7 @@ void skip_if_equal(uint16_t opcode, t_architecture *architecture) {
 void skip_if_not_equal(uint16_t opcode, t_architecture *architecture) {
 	uint8_t registre_number = (opcode & 0x0F00) >> 8;
 	uint8_t value = opcode & 0x00FF;
+	printf("register[%X]: [%02X], value to load: [%02X]",registre_number, architecture->registre_v[registre_number], value);
 	if (architecture->registre_v[registre_number] != value) {
 		architecture->pc_ptr += 2;
 	}
@@ -87,8 +88,9 @@ void load_value_in(uint16_t opcode, t_architecture *architecture) {
 	uint8_t register_target = (opcode & 0x0F00) >> 8;
 	uint8_t value_to_load = opcode & 0x00FF;
 	architecture->registre_v[register_target] = value_to_load;
-	printf("value : %01X : [%02X]", register_target, architecture->registre_v[register_target]);
+	printf("value to load: %X, register value : [%02X]", value_to_load, architecture->registre_v[register_target]);
 }
+
 
 //Load value from register to another register
 //8xy0 x:register to copy y:register to load
@@ -103,8 +105,9 @@ void load_in_to_in(uint16_t opcode, t_architecture *architecture) {
 void add_value_in(uint16_t opcode, t_architecture *architecture) {
 	uint8_t register_target = (opcode & 0x0F00) >> 8;
 	uint8_t value_to_add = opcode & 0x00FF;
+	uint8_t before = architecture->registre_v[register_target];
 	architecture->registre_v[register_target] += value_to_add;
-	//printf("%02X", architecture->registre_v[register_target]);
+	printf("value to add: [%02X] | register before[%X]: | register after[%02X]", value_to_add, before ,architecture->registre_v[register_target]);
 }
 
 void register_or(uint16_t opcode, t_architecture *architecture) {
@@ -198,9 +201,7 @@ void shift_to_left(uint16_t opcode, t_architecture *architecture) {
 void load_addr_ptr(uint16_t opcode, t_architecture *architecture) {
 	uint16_t address = opcode & 0x0FFF;
 	architecture->addr_ptr = &architecture->memory[address];
-
-	printf("%02X", *architecture->addr_ptr);
-	printf("%02X", *(architecture->addr_ptr + 1));
+	printf("Addr loaded : [%02X%02X]", *architecture->addr_ptr, *(architecture->addr_ptr + 1));
 }
 
 void op_bnnn(uint16_t opcode, t_architecture *architecture) {
@@ -264,6 +265,12 @@ void op_fx55(uint16_t opcode, t_architecture *architecture) {
 	}
 }
 
+void op_ex9e(uint16_t opcode, t_architecture *architecture) {
+	architecture->pc_ptr++;
+	architecture->pc_ptr++;
+}
+
+
 //cpu_cycle read the opcode at *pc_ptr and execute the command
 void cpu_cycle(t_architecture *architecture, int cycle_id) {
 	uint8_t octet1 = *architecture->pc_ptr++;
@@ -283,12 +290,15 @@ void cpu_cycle(t_architecture *architecture, int cycle_id) {
 					op_0x00ee(current_opcode, architecture);
 					break;
 				default:
-					op_0x0nnn(current_opcode, architecture);
+					op_0x2nnn(current_opcode, architecture);
 					break;
 			}
 			break;
 		case (0x1000) :
 			go_to(current_opcode, architecture);
+			break;
+		case (0x2000) :
+			op_0x2nnn(current_opcode, architecture);
 			break;
 		case (0x3000) :
 			skip_if_equal(current_opcode, architecture);
@@ -385,8 +395,18 @@ void cpu_cycle(t_architecture *architecture, int cycle_id) {
 				default:
 					break;
 				}
-				break;
 			break;
+			case (0xE000) :
+				switch (current_opcode & 0x00FF) {
+					case (0x009E):
+						op_ex9e(current_opcode, architecture);
+						break;
+					default:
+						break;
+					break;
+				}
+			break;
+		break;
 	}
 	printf("\n");
 	//printf("\n[%02X]\n", current_opcode);*/

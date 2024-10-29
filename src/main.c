@@ -6,6 +6,7 @@ void main_loop(t_architecture *architecture) {
 	InitWindow(DISPLAY_WIDTH * SCALE, DISPLAY_HEIGHT * SCALE, "Chip 8 Emulator");
 	SetTargetFPS(120);
 	int i = 0;
+	system("clear");
 	while (!WindowShouldClose()) {
         // Timers
 
